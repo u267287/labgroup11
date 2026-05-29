@@ -1,7 +1,8 @@
-#include "../src/sample_lib.h"
+#include "sample_lib.h"
 #include "utils.h"
 #include <assert.h>
 #include <stddef.h>
+#include <string.h>
 
 void test_valid_map_name_xl1() {
   int result;
@@ -288,6 +289,144 @@ void test_free_place_list_resets_list() {
   successtest();
 }
 
+void test_init_street_list() {
+  StreetList list;
+
+  init_street_list(&list);
+
+  assert(list.head == NULL);
+}
+
+void test_append_street_segment() {
+  StreetList list;
+
+  init_street_list(&list);
+
+  append_street_segment(
+    &list,
+    "Test Street",
+    "1",
+    "2",
+    10.0,
+    20.0,
+    30.0,
+    40.0,
+    100.0
+  );
+
+  assert(list.head != NULL);
+  assert(strcmp(list.head->name, "Test Street") == 0);
+  assert(strcmp(list.head->id1, "1") == 0);
+  assert(strcmp(list.head->id2, "2") == 0);
+
+  free_street_list(&list);
+}
+
+void test_find_closest_street_segment() {
+  StreetList list;
+  StreetSegment *s;
+
+  init_street_list(&list);
+
+  append_street_segment(
+    &list,
+    "Street A",
+    "1",
+    "2",
+    10.0,
+    10.0,
+    20.0,
+    20.0,
+    100.0
+  );
+
+  s = find_closest_street_segment(&list, 15.0, 15.0);
+
+  assert(s != NULL);
+  assert(strcmp(s->name, "Street A") == 0);
+
+  free_street_list(&list);
+}
+
+void test_init_intersection_map() {
+  IntersectionMap map;
+
+  runningtest("test_init_intersection_map");
+
+  init_intersection_map(&map);
+
+  assert(map.buckets[0] == NULL);
+
+  successtest();
+}
+
+void test_build_intersection_map() {
+  StreetList streets;
+  IntersectionMap map;
+  int result;
+
+  runningtest("test_build_intersection_map");
+
+  init_street_list(&streets);
+  init_intersection_map(&map);
+
+  append_street_segment(&streets, "Street A", "1", "2",
+                      10.0, 10.0, 20.0, 20.0, 100.0);
+
+  append_street_segment(&streets, "Street B", "2", "3",
+                      20.0, 20.0, 30.0, 30.0, 100.0);
+
+  result = build_intersection_map(&map, &streets);
+
+  assertEqualsInt(result, 1);
+
+  free_intersection_map(&map);
+  free_street_list(&streets);
+
+  successtest();
+}
+
+void test_bfs_route_finds_path() {
+  StreetList streets;
+  IntersectionMap map;
+  Path path;
+  StreetSegment *a;
+  StreetSegment *c;
+  int result;
+
+  runningtest("test_bfs_route_finds_path");
+
+  init_street_list(&streets);
+  init_intersection_map(&map);
+
+  append_street_segment(&streets, "Street A", "1", "2",
+                        0.0, 0.0, 0.0, 1.0, 100.0);
+
+  append_street_segment(&streets, "Street B", "2", "3",
+                        0.0, 1.0, 0.0, 2.0, 100.0);
+
+  append_street_segment(&streets, "Street C", "3", "4",
+                        0.0, 2.0, 0.0, 3.0, 100.0);
+
+  build_intersection_map(&map, &streets);
+
+  a = streets.head;
+  c = streets.head->next->next;
+
+  result = bfs_route(&map, a, c, &path);
+
+  assertEqualsInt(result, 1);
+  assertEqualsInt(path.length, 3);
+  assert(strcmp(path.segments[0]->name, "Street A") == 0);
+  assert(strcmp(path.segments[1]->name, "Street B") == 0);
+  assert(strcmp(path.segments[2]->name, "Street C") == 0);
+
+  free_intersection_map(&map);
+  free_street_list(&streets);
+
+  successtest();
+}
+
 void sample_lib_test() {
   running("sample_lib_test");
 
@@ -312,5 +451,17 @@ void sample_lib_test() {
   test_find_exact_place_not_found();
   test_free_place_list_resets_list();
 
+  test_init_street_list();
+  test_append_street_segment();
+  test_find_closest_street_segment();
+  test_init_intersection_map();
+  test_bfs_route_finds_path();
+  test_build_intersection_map();
+
   success();
+}
+
+int main() {
+  sample_lib_test();
+  return 0;
 }

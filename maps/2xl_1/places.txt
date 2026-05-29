@@ -13330,7 +13330,7 @@ eac3cee6-1c97-4435-a49c-3a99925f2f90,Autogruas Europa,office:company,41.4931289,
 ba2affa9-7c23-40ac-81ad-900fc496ca52,Cerámica Ausit,shop:trade,41.4939292,2.1732061
 45102af3-cf56-42e0-ba94-4dfeafbc5428,Repuestos Herpi,shop:car_repair,41.492823,2.1744559
 c9433f89-63b6-4dc8-a823-73b297aa97f1,Autos Coral,shop:car_parts,41.4900709,2.1521934
-0535a525-7f28-4568-8437-c369726e8be3,Nice room from Ettore,tourism:apartment,41.3812182,2.1804611
+0535a525-7f28-4568-8437-c369726e8be3,Nice room from Ettore,tourism:apartment,41.3812182,2.1804611
 023cddb2-4218-470b-9049-1e0e193ef367,Loreto,shop:gift,41.3865161,2.1786909
 6a6c561e-0cf3-4187-b922-60d7847650e8,Barcelona Bubbles,shop:clothes,41.3863021,2.1791083
 22efd32c-5dd4-4bf9-9871-06c00e5f3dfb,mindona,amenity:restaurant,41.3785996,2.1675992
