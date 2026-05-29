@@ -9,11 +9,9 @@ void init_street_list(StreetList *list) {
   list->count = 0;
 }
 
-int append_street_segment(StreetList *list, const char *name,
-                          const char *id1, const char *id2,
-                          double lat1, double lon1,
-                          double lat2, double lon2,
-                          double length_meters) {
+int append_street_segment(StreetList *list, const char *name, const char *id1,
+                          const char *id2, double lat1, double lon1,
+                          double lat2, double lon2, double length_meters) {
   StreetSegment *new_segment;
   StreetSegment *current;
 
@@ -71,8 +69,8 @@ static double degrees_to_radians(double degrees) {
   return degrees * 3.141592653589793 / 180.0;
 }
 
-static double haversine_distance(double lat1, double lon1,
-                                 double lat2, double lon2) {
+static double haversine_distance(double lat1, double lon1, double lat2,
+                                 double lon2) {
   double earth_radius = 6371000.0;
   double dlat = degrees_to_radians(lat2 - lat1);
   double dlon = degrees_to_radians(lon2 - lon1);
@@ -83,16 +81,15 @@ static double haversine_distance(double lat1, double lon1,
   lat2 = degrees_to_radians(lat2);
 
   a = sin(dlat / 2.0) * sin(dlat / 2.0) +
-      cos(lat1) * cos(lat2) *
-      sin(dlon / 2.0) * sin(dlon / 2.0);
+      cos(lat1) * cos(lat2) * sin(dlon / 2.0) * sin(dlon / 2.0);
 
   c = 2.0 * atan2(sqrt(a), sqrt(1.0 - a));
 
   return earth_radius * c;
 }
 
-StreetSegment *find_closest_street_segment(StreetList *list,
-                                           double lat, double lon) {
+StreetSegment *find_closest_street_segment(StreetList *list, double lat,
+                                           double lon) {
   StreetSegment *current = list->head;
   StreetSegment *best = NULL;
   double best_distance = -1.0;
@@ -137,8 +134,7 @@ static int print_next_different_connected_streets(StreetList *list,
     int printed = 0;
 
     while (current != NULL) {
-      if (current != base &&
-          strcmp(base->id2, current->id1) == 0) {
+      if (current != base && strcmp(base->id2, current->id1) == 0) {
 
         if (strcmp(current->name, segment->name) != 0) {
           printf("        - %s\n", current->name);
@@ -166,9 +162,9 @@ void print_connected_streets(StreetList *list, StreetSegment *segment) {
   StreetSegment *current = list->head;
 
   printf("\nClosest street: %s\n", segment->name);
-  printf("Between %s (%.6f, %.6f) and %s (%.6f, %.6f)\n",
-         segment->id1, segment->lat1, segment->lon1,
-         segment->id2, segment->lat2, segment->lon2);
+  printf("Between %s (%.6f, %.6f) and %s (%.6f, %.6f)\n", segment->id1,
+         segment->lat1, segment->lon1, segment->id2, segment->lat2,
+         segment->lon2);
 
   printf("\nFrom this street segment, you can go to:\n");
   printf("    - %s\n", segment->name);

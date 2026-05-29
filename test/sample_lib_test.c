@@ -302,17 +302,8 @@ void test_append_street_segment() {
 
   init_street_list(&list);
 
-  append_street_segment(
-    &list,
-    "Test Street",
-    "1",
-    "2",
-    10.0,
-    20.0,
-    30.0,
-    40.0,
-    100.0
-  );
+  append_street_segment(&list, "Test Street", "1", "2", 10.0, 20.0, 30.0, 40.0,
+                        100.0);
 
   assert(list.head != NULL);
   assert(strcmp(list.head->name, "Test Street") == 0);
@@ -328,17 +319,8 @@ void test_find_closest_street_segment() {
 
   init_street_list(&list);
 
-  append_street_segment(
-    &list,
-    "Street A",
-    "1",
-    "2",
-    10.0,
-    10.0,
-    20.0,
-    20.0,
-    100.0
-  );
+  append_street_segment(&list, "Street A", "1", "2", 10.0, 10.0, 20.0, 20.0,
+                        100.0);
 
   s = find_closest_street_segment(&list, 15.0, 15.0);
 
@@ -370,11 +352,11 @@ void test_build_intersection_map() {
   init_street_list(&streets);
   init_intersection_map(&map);
 
-  append_street_segment(&streets, "Street A", "1", "2",
-                      10.0, 10.0, 20.0, 20.0, 100.0);
+  append_street_segment(&streets, "Street A", "1", "2", 10.0, 10.0, 20.0, 20.0,
+                        100.0);
 
-  append_street_segment(&streets, "Street B", "2", "3",
-                      20.0, 20.0, 30.0, 30.0, 100.0);
+  append_street_segment(&streets, "Street B", "2", "3", 20.0, 20.0, 30.0, 30.0,
+                        100.0);
 
   result = build_intersection_map(&map, &streets);
 
@@ -399,14 +381,14 @@ void test_bfs_route_finds_path() {
   init_street_list(&streets);
   init_intersection_map(&map);
 
-  append_street_segment(&streets, "Street A", "1", "2",
-                        0.0, 0.0, 0.0, 1.0, 100.0);
+  append_street_segment(&streets, "Street A", "1", "2", 0.0, 0.0, 0.0, 1.0,
+                        100.0);
 
-  append_street_segment(&streets, "Street B", "2", "3",
-                        0.0, 1.0, 0.0, 2.0, 100.0);
+  append_street_segment(&streets, "Street B", "2", "3", 0.0, 1.0, 0.0, 2.0,
+                        100.0);
 
-  append_street_segment(&streets, "Street C", "3", "4",
-                        0.0, 2.0, 0.0, 3.0, 100.0);
+  append_street_segment(&streets, "Street C", "3", "4", 0.0, 2.0, 0.0, 3.0,
+                        100.0);
 
   build_intersection_map(&map, &streets);
 

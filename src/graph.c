@@ -24,7 +24,7 @@ void init_intersection_map(IntersectionMap *map) {
 }
 
 IntersectionEntry *find_intersection_entry(IntersectionMap *map,
-                                                   const char *id) {
+                                           const char *id) {
   unsigned int index = hash_intersection_id(id);
   IntersectionEntry *current = map->buckets[index];
 
@@ -40,7 +40,7 @@ IntersectionEntry *find_intersection_entry(IntersectionMap *map,
 }
 
 static IntersectionEntry *create_intersection_entry(IntersectionMap *map,
-                                                     const char *id) {
+                                                    const char *id) {
   unsigned int index = hash_intersection_id(id);
   IntersectionEntry *entry;
 
@@ -60,8 +60,7 @@ static IntersectionEntry *create_intersection_entry(IntersectionMap *map,
   return entry;
 }
 
-static int add_segment_to_intersection(IntersectionMap *map,
-                                       const char *id,
+static int add_segment_to_intersection(IntersectionMap *map, const char *id,
                                        StreetSegment *segment) {
   IntersectionEntry *entry;
   ConnectionNode *node;
@@ -170,7 +169,8 @@ static IntersectionEntry *find_next_different_entry(IntersectionMap *map,
   return NULL;
 }
 
-void print_connected_streets_fast(IntersectionMap *map, StreetSegment *segment) {
+void print_connected_streets_fast(IntersectionMap *map,
+                                  StreetSegment *segment) {
   IntersectionEntry *entry;
   ConnectionNode *node;
 

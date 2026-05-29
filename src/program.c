@@ -111,16 +111,13 @@ static int load_streets_from_file(StreetList *list, const char *map_name) {
     char *length = strtok(NULL, ",");
     char *name = strtok(NULL, "\n");
 
-    if (id1 != NULL && lat1 != NULL && lon1 != NULL &&
-        id2 != NULL && lat2 != NULL && lon2 != NULL &&
-        length != NULL && name != NULL) {
+    if (id1 != NULL && lat1 != NULL && lon1 != NULL && id2 != NULL &&
+        lat2 != NULL && lon2 != NULL && length != NULL && name != NULL) {
 
       trim_newline(name);
 
-      append_street_segment(list, name, id1, id2,
-                            atof(lat1), atof(lon1),
-                            atof(lat2), atof(lon2),
-                            atof(length));
+      append_street_segment(list, name, id1, id2, atof(lat1), atof(lon1),
+                            atof(lat2), atof(lon2), atof(length));
     }
   }
 
@@ -144,11 +141,8 @@ int is_valid_map_name(const char *name) {
   return 0;
 }
 
-static int ask_position(const char *title,
-                        HouseList *houses,
-                        PlaceList *places,
-                        double *lat,
-                        double *lon) {
+static int ask_position(const char *title, HouseList *houses, PlaceList *places,
+                        double *lat, double *lon) {
   char choice[16];
   char street[MAX_INPUT];
   char numstr[16];
@@ -188,8 +182,8 @@ static int ask_position(const char *title,
       int option;
       int i;
 
-      n = collect_similar_places(places, place_name,
-                                 suggestions, MAX_SUGGESTIONS);
+      n = collect_similar_places(places, place_name, suggestions,
+                                 MAX_SUGGESTIONS);
 
       if (n <= 0) {
         printf("Place not found\n");
@@ -237,8 +231,7 @@ static int ask_position(const char *title,
       int option;
       int i;
 
-      n = collect_similar_streets(houses, street,
-                                  suggestions, MAX_SUGGESTIONS);
+      n = collect_similar_streets(houses, street, suggestions, MAX_SUGGESTIONS);
 
       if (n <= 0) {
         printf("Street not found\n");
@@ -362,7 +355,8 @@ void run_program(void) {
     return;
   }
 
-  origin_segment = find_closest_street_segment(&streets, origin_lat, origin_lon);
+  origin_segment =
+      find_closest_street_segment(&streets, origin_lat, origin_lon);
 
   if (origin_segment == NULL) {
     printf("Could not find origin street\n");
@@ -376,8 +370,8 @@ void run_program(void) {
   print_connected_streets(&streets, origin_segment);
   print_connected_streets_fast(&graph, origin_segment);
 
-  if (!ask_position("DESTINATION", &houses, &places,
-                    &destination_lat, &destination_lon)) {
+  if (!ask_position("DESTINATION", &houses, &places, &destination_lat,
+                    &destination_lon)) {
     free_house_list(&houses);
     free_place_list(&places);
     free_intersection_map(&graph);
@@ -385,9 +379,8 @@ void run_program(void) {
     return;
   }
 
-  destination_segment = find_closest_street_segment(&streets,
-                                                   destination_lat,
-                                                   destination_lon);
+  destination_segment =
+      find_closest_street_segment(&streets, destination_lat, destination_lon);
 
   if (destination_segment == NULL) {
     printf("Could not find destination street\n");
@@ -400,12 +393,9 @@ void run_program(void) {
 
   printf("\nDestination closest street: %s\n", destination_segment->name);
   printf("Between %s (%.6f, %.6f) and %s (%.6f, %.6f)\n",
-         destination_segment->id1,
-         destination_segment->lat1,
-         destination_segment->lon1,
-         destination_segment->id2,
-         destination_segment->lat2,
-         destination_segment->lon2);
+         destination_segment->id1, destination_segment->lat1,
+         destination_segment->lon1, destination_segment->id2,
+         destination_segment->lat2, destination_segment->lon2);
 
   if (bfs_route(&graph, origin_segment, destination_segment, &route)) {
     print_route(&route);

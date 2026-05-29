@@ -5,8 +5,6 @@
 
 #define VISITED_BUCKETS 1009
 
-
-
 typedef struct QueueNode {
   Path path;
   struct QueueNode *next;
@@ -14,7 +12,8 @@ typedef struct QueueNode {
 
 static void enqueue(QueueNode **front, QueueNode **back, Path path) {
   QueueNode *node = malloc(sizeof(QueueNode));
-  if (node == NULL) return;
+  if (node == NULL)
+    return;
 
   node->path = path;
   node->next = NULL;
@@ -31,7 +30,8 @@ static void enqueue(QueueNode **front, QueueNode **back, Path path) {
 static int dequeue(QueueNode **front, QueueNode **back, Path *path) {
   QueueNode *temp;
 
-  if (*front == NULL) return 0;
+  if (*front == NULL)
+    return 0;
 
   temp = *front;
   *path = temp->path;
@@ -119,10 +119,8 @@ static void free_visited_set(VisitedSet *set) {
   }
 }
 
-int bfs_route(IntersectionMap *map,
-              StreetSegment *origin,
-              StreetSegment *destination,
-              Path *result) {
+int bfs_route(IntersectionMap *map, StreetSegment *origin,
+              StreetSegment *destination, Path *result) {
   QueueNode *front = NULL;
   QueueNode *back = NULL;
   VisitedSet visited;
@@ -154,7 +152,8 @@ int bfs_route(IntersectionMap *map,
       node = entry->segments;
 
       while (node != NULL) {
-        if (!visited_contains(&visited, node->segment) && result->length < MAX_PATH) {
+        if (!visited_contains(&visited, node->segment) &&
+            result->length < MAX_PATH) {
           Path new_path = *result;
           new_path.segments[new_path.length] = node->segment;
           new_path.length++;
@@ -223,12 +222,9 @@ void print_route(Path *path) {
       i++;
     }
 
-    printf("%s to %s and continue for %.0fm\n",
-           direction,
-           street_name,
+    printf("%s to %s and continue for %.0fm\n", direction, street_name,
            total_distance);
   }
 
-  printf("You have arrived to %s\n",
-         path->segments[path->length - 1]->name);
+  printf("You have arrived to %s\n", path->segments[path->length - 1]->name);
 }

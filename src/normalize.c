@@ -55,8 +55,7 @@ static void normalize_spaces(char *s) {
   int last_was_space = 1;
 
   while (s[i] != '\0') {
-    if (s[i] == '-' || s[i] == '_' ||
-        s[i] == ',' || s[i] == '.') {
+    if (s[i] == '-' || s[i] == '_' || s[i] == ',' || s[i] == '.') {
       s[i] = ' ';
     }
 
